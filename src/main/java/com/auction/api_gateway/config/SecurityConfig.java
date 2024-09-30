@@ -19,8 +19,12 @@ import java.util.Arrays;
 //@EnableWebSecurity
 public class SecurityConfig {
 
-    // Replace with your actual JWT issuer URI
-    private final String jwtIssuerUri = "http://localhost:8282/realms/spring-microservices-auction-realm"; // Update with your Keycloak realm URL
+    private final String jwtIssuerUri = "http://localhost:8282/realms/spring-microservices-auction-realm";
+
+    private final String[] freeResourceUrls = {
+            "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
+            "/api-docs/**", "/aggregate/**"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,7 +32,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Set CORS configuration
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless APIs
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/public/**").permitAll() // Public access for certain paths
+                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers(freeResourceUrls).permitAll()
                         .anyRequest().authenticated() // Protect all other endpoints
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))); // Configure JWT authentication
@@ -55,10 +60,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:4200")); // Allowed front-end domains
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:4200", "http://localhost:9090")); // Allowed front-end domains
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Allowed methods
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Allowed headers
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // Apply the CORS configuration to all endpoints
         return source;

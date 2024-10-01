@@ -22,7 +22,7 @@ public class Routes {
     public RouterFunction<ServerResponse> productServiceRoute() {
         return route("product_service_get_all_products")
                 .route(RequestPredicates.path("/api/product/get-all-products"),HandlerFunctions.http("http://localhost:8484"))
-                .filter(CircuitBreakerFilterFunctions.circuitBreaker("productServiceCircuitBreaker",
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("getAllProductServiceCircuitBreaker",
                         URI.create("forward:/fallbackRoute")))
                 .build();
     }
@@ -31,7 +31,7 @@ public class Routes {
     public RouterFunction<ServerResponse> createProductServiceRoute() {
         return route("product_service_create")
                 .route(RequestPredicates.path("/api/product/create-product"),HandlerFunctions.http("http://localhost:8484"))
-                .filter(CircuitBreakerFilterFunctions.circuitBreaker("productServiceCircuitBreaker",
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("createProductServiceCircuitBreaker",
                         URI.create("forward:/fallbackRoute")))
                 .build();
 
@@ -41,6 +41,8 @@ public class Routes {
     public RouterFunction<ServerResponse> productServiceSwaggerRoute() {
         return route("product_service_swagger")
                 .route(RequestPredicates.path("/aggregate/product-service/v3/api-docs"),HandlerFunctions.http("http://localhost:8484"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("productServiceSwaggerCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .filter((setPath("api-docs")))
                 .build();
     }
@@ -49,6 +51,8 @@ public class Routes {
     public RouterFunction<ServerResponse> userServiceRoute() {
         return route("user_service_get_all_users")
                 .route(RequestPredicates.path("/api/user/get-all-users"),HandlerFunctions.http("http://localhost:8585"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("getAllUsersUserServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .build();
     }
 
@@ -56,6 +60,8 @@ public class Routes {
     public RouterFunction<ServerResponse> userServiceSwaggerRoute() {
         return route("user_service_swagger")
                 .route(RequestPredicates.path("/aggregate/user-service/v3/api-docs"),HandlerFunctions.http("http://localhost:8585"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("userServiceSwaggerCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .filter((setPath("api-docs")))
                 .build();
     }
@@ -64,6 +70,8 @@ public class Routes {
     public RouterFunction<ServerResponse> addressServiceRoute() {
         return route("address_service_get_all_addresses")
                 .route(RequestPredicates.path("/api/address/get-all-addresses"),HandlerFunctions.http("http://localhost:8787"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("getAllAddressesAddressServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .build();
     }
 
@@ -71,13 +79,17 @@ public class Routes {
     public RouterFunction<ServerResponse> addressServiceSwaggerRoute() {
         return route("address_service_swagger")
                 .route(RequestPredicates.path("/aggregate/address-service/v3/api-docs"),HandlerFunctions.http("http://localhost:8787"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("addressServiceSwaggerCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .filter((setPath("api-docs")))
                 .build();
     }
     @Bean
     public RouterFunction<ServerResponse> paymentServiceRoute() {
-        return route("address_service")
+        return route("payment_service")
                 .route(RequestPredicates.path("/api/payment/get-all-payments"),HandlerFunctions.http("http://localhost:8686"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("getAllPaymentsPaymentServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .build();
     }
 
@@ -85,6 +97,8 @@ public class Routes {
     public RouterFunction<ServerResponse> paymentServiceSwaggerRoute() {
         return route("payment_service_swagger")
                 .route(RequestPredicates.path("/aggregate/payment-service/v3/api-docs"),HandlerFunctions.http("http://localhost:8686"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("paymentServiceSwaggerCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .filter((setPath("api-docs")))
                 .build();
     }

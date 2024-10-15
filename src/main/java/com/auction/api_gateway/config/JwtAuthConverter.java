@@ -20,11 +20,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.*;
 
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
-public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
-
+//@Component
+//@NoArgsConstructor
+//@AllArgsConstructor
+public class JwtAuthConverter {
+///public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+/*
     private final JwtGrantedAuthoritiesConverter  jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
     @Value("${jwt.auth.converter.principle-attribute}")
@@ -73,4 +74,6 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
                 .stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toSet());
     }
+    */
+
 }

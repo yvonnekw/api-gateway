@@ -25,19 +25,21 @@ import lombok.*;
 
 import java.util.Arrays;
 import java.util.List;
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-@RequiredArgsConstructor
+//@Configuration
+//@EnableWebSecurity
+//@EnableMethodSecurity
+//@RequiredArgsConstructor
 public class SecurityConfig {
     //private final String jwtIssuerUri = "http://localhost:8090/realms/oauth2-auction-realm";
 
-    private final JwtAuthConverter jwtAuthConverter;
+    //private final JwtAuthConverter jwtAuthConverter;
+   /*
+
     private final String[] freeResourceUrls = {
             "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
             "/api-docs/**", "/aggregate/**", "/api/auth/create-user"
     };
-
+*/
     /*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -56,7 +58,7 @@ public class SecurityConfig {
         return http.build();
     }
 */
-
+/*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
      http

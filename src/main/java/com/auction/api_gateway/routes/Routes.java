@@ -1,8 +1,8 @@
 package com.auction.api_gateway.routes;
 
-import org.springframework.cloud.gateway.server.mvc.filter.CircuitBreakerFilterFunctions;
-import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
-import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
+//import org.springframework.cloud.gateway.server.mvc.filter.CircuitBreakerFilterFunctions;
+//import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
+//import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -13,15 +13,17 @@ import java.net.URI;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions.setPath;
-import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
+//import static org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions.setPath;
+//import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
 import org.springframework.security.core.GrantedAuthority;
 
 
 
 
-@Configuration
+//@Configuration
 public class Routes {
+
+    /*
     @Bean
     public RouterFunction<ServerResponse> productServiceRoute() {
         return route("product_service_get_all_products")
@@ -78,7 +80,7 @@ public class Routes {
                         URI.create("forward:/fallbackRoute")))
                 .build();
     }
-
+*/
 /*
     @Bean
     public RouterFunction<ServerResponse> createUserServiceRoute() {
@@ -155,7 +157,7 @@ public class Routes {
 */
 
 
-
+/*
     @Bean
     public RouterFunction<ServerResponse> userServiceSwaggerRoute() {
         return route("user_service_swagger")
@@ -220,7 +222,7 @@ public class Routes {
                                 .body("Service Unavailable, please try again later"))
                 .build();
     }
-
+*/
 /*
     @Bean
     public RouterFunction<ServerResponse> fallbackRoute() {

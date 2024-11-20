@@ -1,23 +1,29 @@
 package com.auction.api_gateway.routes;
 
-import org.springframework.cloud.gateway.server.mvc.filter.CircuitBreakerFilterFunctions;
-import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
-import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
+//import org.springframework.cloud.gateway.server.mvc.filter.CircuitBreakerFilterFunctions;
+//import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
+//import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.function.RequestPredicate;
-import org.springframework.web.servlet.function.RequestPredicates;
-import org.springframework.web.servlet.function.RouterFunction;
-import org.springframework.web.servlet.function.ServerResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.servlet.function.*;
 
 import java.net.URI;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import static org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions.setPath;
-import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
+//import static org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions.setPath;
+//import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
+import org.springframework.security.core.GrantedAuthority;
 
-@Configuration
+
+
+
+//@Configuration
 public class Routes {
+
+    /*
     @Bean
     public RouterFunction<ServerResponse> productServiceRoute() {
         return route("product_service_get_all_products")
@@ -48,6 +54,15 @@ public class Routes {
     }
 
     @Bean
+    public RouterFunction<ServerResponse> userServiceGetRoute() {
+        return route("user_service_get_user")
+                .route(RequestPredicates.path("/api/user/"),HandlerFunctions.http("http://localhost:8585"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("getUsersUserServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
+                .build();
+    }
+
+    @Bean
     public RouterFunction<ServerResponse> userServiceRoute() {
         return route("user_service_get_all_users")
                 .route(RequestPredicates.path("/api/user/get-all-users"),HandlerFunctions.http("http://localhost:8585"))
@@ -56,6 +71,93 @@ public class Routes {
                 .build();
     }
 
+
+    @Bean
+    public RouterFunction<ServerResponse> createUserServiceRoute() {
+        return route("user_service_create_user")
+                .route(RequestPredicates.path("/api/auth/create-user"),HandlerFunctions.http("http://localhost:8585"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("createUsersUserServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
+                .build();
+    }
+*/
+/*
+    @Bean
+    public RouterFunction<ServerResponse> createUserServiceRoute() {
+        return route("user_service_create_user")
+                .path("/api/auth/create-user", builder -> builder
+                        .POST("", request -> {
+                            // Retrieve user roles from the SecurityContext
+                            Set<String> roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                                    .map(GrantedAuthority::getAuthority)
+                                    .collect(Collectors.toSet());
+
+                            // Check for required roles
+                            if (!roles.contains("client_user") && !roles.contains("client_admin")) {
+                                return ServerResponse.status(HttpStatus.FORBIDDEN).build();
+                            }
+
+                            // Forward the request to the downstream service
+                            return HandlerFunctions.http("http://localhost:8585").handle(request);
+                        }))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("createUsersUserServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
+                .build();
+    }
+
+    */
+/*
+    @Bean
+    public RouterFunction<ServerResponse> createUserServiceRoute() {
+        return route("user_service_create_user")
+                .path("/api/auth/create-user", builder -> builder
+                        .POST("", request -> {
+                            // Retrieve user roles from the SecurityContext
+                            Set<String> roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                                    .map(GrantedAuthority::getAuthority)
+                                    .collect(Collectors.toSet());
+
+                            // Check for required roles
+                            if (!roles.contains("ROLE_ADMIN") && !roles.contains("ROLE_USER")) {
+                                return ServerResponse.status(HttpStatus.FORBIDDEN).build();
+                            }
+
+                            // Forward the request to the downstream service
+                            return HandlerFunctions.http("http://localhost:8585").handle(request);
+                        }))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("createUsersUserServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
+                .build();
+    }
+*/
+
+    /*
+    @Bean
+    public RouterFunction<ServerResponse> createUserServiceRoute() {
+        return route("user_service_create_user")
+                .path("/api/auth/create-user", builder -> builder
+                        .GET("", new SecurityFilter(HandlerFunctions.http("http://localhost:8585"), "ROLE_ADMIN"))
+                )
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("createUsersUserServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
+                .build();
+    }
+    */
+/*
+    @Bean
+    public RouterFunction<ServerResponse> createUserServiceRoute() {
+        return RouterFunctions
+                .route(RequestPredicates.path("/api/auth/create-user"),
+                        HandlerFunctions.http("http://localhost:8585"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker(
+                        "createUsersUserServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")
+                ));
+    }
+*/
+
+
+/*
     @Bean
     public RouterFunction<ServerResponse> userServiceSwaggerRoute() {
         return route("user_service_swagger")
@@ -74,6 +176,16 @@ public class Routes {
                         URI.create("forward:/fallbackRoute")))
                 .build();
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> createAddressServiceRoute() {
+        return route("address_service_create_address")
+                .route(RequestPredicates.path("/api/address/create-address"),HandlerFunctions.http("http://localhost:8787"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("createAddressAddressServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
+                .build();
+    }
+
 
     @Bean
     public RouterFunction<ServerResponse> addressServiceSwaggerRoute() {
@@ -102,12 +214,21 @@ public class Routes {
                 .filter((setPath("api-docs")))
                 .build();
     }
-
+    @Bean
+    public RouterFunction<ServerResponse> fallbackRoute() {
+        return route()
+                .GET("/fallbackRoute", request ->
+                        ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE)
+                                .body("Service Unavailable, please try again later"))
+                .build();
+    }
+*/
+/*
     @Bean
     public RouterFunction<ServerResponse> fallbackRoute() {
         return route("fallbackRoute")
                 .GET("/fallbackRoute", request -> ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service Unavailable, please try again later"))
                 .build();
     }
-
+*/
 }
